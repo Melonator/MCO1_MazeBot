@@ -43,7 +43,7 @@ class Graph:
     # Create adjacency list from text file
     def createAdjList(self, mazeTextFile):
         data = self.fileToStringList(mazeTextFile)
-        self.mazeSize = int(data[0][0])
+        self.mazeSize = int(data[0])
         data.pop(0)
         for x in range(self.mazeSize):
             for y in range(self.mazeSize):
@@ -165,7 +165,9 @@ class Graph:
 # 3. Call object.aStarSearch() to return the most optimal path
 def main():
     graph = Graph("maze.txt")
-    print("Path is {}".format(graph.aStarSearch()))
+    path = graph.aStarSearch()
+    print("Path is {}".format(path))
+    print("Length is {}".format(len(path)))
 
 if __name__ == '__main__':
     main()
