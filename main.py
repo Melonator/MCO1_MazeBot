@@ -2,6 +2,9 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import os
+import time
+
 
 class Graph:
     mazeSize = int
@@ -42,28 +45,28 @@ class Graph:
 
     # Create adjacency list from text file
     def createAdjList(self, mazeTextFile):
-        data = self.fileToStringList(mazeTextFile)
-        self.mazeSize = int(data[0])
-        data.pop(0)
+        self.data = self.fileToStringList(mazeTextFile)
+        self.mazeSize = int(self.data[0])
+        self.data.pop(0)
         for x in range(self.mazeSize):
             for y in range(self.mazeSize):
-                char = data[x][y]
+                char = self.data[x][y]
                 # Get traversible locations if node is not a wall
                 if not self.isWallChar(char):
                     if not self.isOutOfBounds(x-1, y):
-                        up = data[x-1][y]
+                        up = self.data[x-1][y]
                     else:
                         up = " "
                     if not self.isOutOfBounds(x+1, y):
-                        down = data[x+1][y]
+                        down = self.data[x+1][y]
                     else:
                         down = " "
                     if not self.isOutOfBounds(x, y-1):
-                        left = data[x][y-1]
+                        left = self.data[x][y-1]
                     else:
                         left = " "
                     if not self.isOutOfBounds(x, y+1):
-                        right = data[x][y+1]
+                        right = self.data[x][y+1]
                     else:
                         right = " "
 
@@ -118,6 +121,9 @@ class Graph:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
 
+            # Call draw path function
+            self.draw(n)
+
             if n is None:
                 print("No path exists!")
                 return None
@@ -161,12 +167,16 @@ class Graph:
         print('Path does not exist!')
         return None
 
-def draw(this, size, data):
-    print("Here is the generated graph from the text file:")
-    for row in size:
-        for column in size:
-            print(data[row][column])
-
+    def draw(self, n):
+        time.sleep(.5)
+        os.system('cls')
+        for row in range(self.mazeSize):
+            for column in range(self.mazeSize):
+                if row == n[0] and column == n[1]:
+                    print("o", end = ' ')
+                else:
+                    print(self.data[row][column], end=' ')
+            print("")
 
 
 # 1. Instantiate graph object
