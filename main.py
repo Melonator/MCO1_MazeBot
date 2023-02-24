@@ -1,9 +1,7 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import os
 import time
+import style
 
 
 class Graph:
@@ -11,6 +9,7 @@ class Graph:
     start = (int, int)
     end = (int, int)
     adjacList = {}
+    explored = {}
 
     def __init__(self, mazeTextFile):
         self.createAdjList(mazeTextFile)
@@ -121,8 +120,13 @@ class Graph:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
 
+
+
+            # Explored
+            self.explored[(n[0], n[1])] = (n[0], n[1])
+
             # Call draw path function
-            self.draw(n)
+            self.draw()
 
             if n is None:
                 print("No path exists!")
@@ -133,12 +137,17 @@ class Graph:
                 optimalPath = []
                 print("Goal found!")
                 node = self.end
+
                 while node != parents[node]:
                     optimalPath.append(node)
                     node = parents[node]
                 optimalPath.append(self.start)
                 optimalPath.reverse()
+
                 return optimalPath
+
+
+
 
             # Get all neighbors of chosen node
             for neighbor in self.getNeighbors(n):
@@ -167,16 +176,18 @@ class Graph:
         print('Path does not exist!')
         return None
 
-    def draw(self, n):
+    def draw(self):
+
         time.sleep(.5)
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         for row in range(self.mazeSize):
             for column in range(self.mazeSize):
-                if row == n[0] and column == n[1]:
-                    print("o", end = ' ')
+                if (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
+                    print("o", end=" ")
                 else:
-                    print(self.data[row][column], end=' ')
-            print("")
+                    print(self.data[row][column], end=" ")
+            print()
 
 
 # 1. Instantiate graph object
@@ -185,7 +196,24 @@ class Graph:
 def main():
     graph = Graph("maze.txt")
     path = graph.aStarSearch()
-    print("Path is {}".format(path))
+    pathDisplay = []
+
+    # Display optimal path
+    for coord in path:
+        pathDisplay.append(coord)
+        time.sleep(.5)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        for row in range(graph.mazeSize):
+            for column in range(graph.mazeSize):
+                if (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
+                    print("%", end=" ")
+                elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
+                    print("o", end=" ")
+                else:
+                    print(graph.data[row][column], end=" ")
+            print()
+
+    print()
     print("Length is {}".format(len(path)))
 
 if __name__ == '__main__':
