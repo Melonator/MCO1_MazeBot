@@ -160,6 +160,15 @@ class Graph:
 
         print('Path does not exist!')
         return None
+
+def draw(this, size, data):
+    print("Here is the generated graph from the text file:")
+    for row in size:
+        for column in size:
+            print(data[row][column])
+
+
+
 # 1. Instantiate graph object
 # 2. Set constructor as the name of the file
 # 3. Call object.aStarSearch() to return the most optimal path
