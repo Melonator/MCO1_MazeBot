@@ -2,6 +2,7 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import mazeGen
 
 class Graph:
     mazeSize = int
@@ -168,6 +169,8 @@ def main():
     path = graph.aStarSearch()
     print("Path is {}".format(path))
     print("Length is {}".format(len(path)))
+
+    mazeGen.printMaze(mazeGen.maze)
 
 if __name__ == '__main__':
     main()
