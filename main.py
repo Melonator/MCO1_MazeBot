@@ -1,4 +1,3 @@
-
 import os
 import time
 import style
@@ -52,38 +51,38 @@ class Graph:
                 char = self.data[x][y]
                 # Get traversible locations if node is not a wall
                 if not self.isWallChar(char):
-                    if not self.isOutOfBounds(x-1, y):
-                        up = self.data[x-1][y]
+                    if not self.isOutOfBounds(x - 1, y):
+                        up = self.data[x - 1][y]
                     else:
                         up = " "
-                    if not self.isOutOfBounds(x+1, y):
-                        down = self.data[x+1][y]
+                    if not self.isOutOfBounds(x + 1, y):
+                        down = self.data[x + 1][y]
                     else:
                         down = " "
-                    if not self.isOutOfBounds(x, y-1):
-                        left = self.data[x][y-1]
+                    if not self.isOutOfBounds(x, y - 1):
+                        left = self.data[x][y - 1]
                     else:
                         left = " "
-                    if not self.isOutOfBounds(x, y+1):
-                        right = self.data[x][y+1]
+                    if not self.isOutOfBounds(x, y + 1):
+                        right = self.data[x][y + 1]
                     else:
                         right = " "
 
                     nodes = [up, down, left, right]
-                    nodesCoords = [(x-1,y), (x+1, y),
-                                   (x, y-1), (x, y+1)]
+                    nodesCoords = [(x - 1, y), (x + 1, y),
+                                   (x, y - 1), (x, y + 1)]
                     adjacNodesCoords = []
 
                     for i in range(len(nodes)):
                         if nodes[i] != " " and self.isWallChar(nodes[i]) is False:
                             adjacNodesCoords.append(nodesCoords[i])
-                    self.adjacList[x,y] = adjacNodesCoords
+                    self.adjacList[x, y] = adjacNodesCoords
 
                 # Set start if node encountered is start
-                if(self.isStartChar(char)):
+                if (self.isStartChar(char)):
                     self.start = (x, y)
                 # Set end if node encountered is end
-                elif(self.isGoalChar(char)):
+                elif (self.isGoalChar(char)):
                     self.end = (x, y)
 
     # Utility method
@@ -105,7 +104,7 @@ class Graph:
         gCosts = {}
         gCosts[self.start] = 0
 
-        #set initial costs
+        # set initial costs
         for neighbor in self.getNeighbors(self.start):
             gCosts[neighbor] = 1
 
@@ -119,8 +118,6 @@ class Graph:
             for node in open:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
-
-
 
             # Explored
             self.explored[(n[0], n[1])] = (n[0], n[1])
@@ -146,9 +143,6 @@ class Graph:
                 optimalPath.reverse()
 
                 return optimalPath
-
-
-
 
             # Get all neighbors of chosen node
             for neighbor in self.getNeighbors(n):
@@ -180,7 +174,10 @@ class Graph:
     def draw(self):
 
         time.sleep(.5)
-        os.system('cls' if os.name == 'nt' else 'clear')
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
 
         for row in range(self.mazeSize):
             for column in range(self.mazeSize):
@@ -212,10 +209,8 @@ def main():
     print(style.WHITE + "----------\nPress any key to find your way out!")
     input()
 
-
     path = graph.aStarSearch()
     pathDisplay = []
-
 
     print(style.WHITE + "Press any key to display the optimal path!")
     input()
@@ -226,8 +221,10 @@ def main():
         pathDisplay.append(coord)
         time.sleep(.5)
 
-        os.system('cls' if os.name == 'nt' else 'clear')
-
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
 
         for row in range(graph.mazeSize):
             for column in range(graph.mazeSize):
@@ -247,6 +244,7 @@ def main():
 
     print()
     print(style.GREEN + "Optimal path found!")
+
 
 if __name__ == '__main__':
     main()
