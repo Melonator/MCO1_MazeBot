@@ -135,7 +135,7 @@ class Graph:
             # Return optimal path via traversing parent map if end is reached
             if n == self.end:
                 optimalPath = []
-                print("Goal found!")
+                print(style.GREEN + "Goal found!")
                 time.sleep(2)
                 node = self.end
 
@@ -184,8 +184,14 @@ class Graph:
 
         for row in range(self.mazeSize):
             for column in range(self.mazeSize):
-                if (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
-                    print(style.RED + "o", end=" ")
+                if (row, column) == self.start:
+                    print(style.YELLOW + self.data[row][column], end=" ")
+                elif (row, column) == self.end:
+                    print(style.YELLOW + self.data[row][column], end=" ")
+                elif self.isWallChar(self.data[row][column]):
+                    print(style.BLUE + self.data[row][column], end=" ")
+                elif (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
+                    print(style.RED + "█", end=" ")
                 else:
                     print(style.WHITE + self.data[row][column], end=" ")
             print()
@@ -196,10 +202,25 @@ class Graph:
 # 3. Call object.aStarSearch() to return the most optimal path
 def main():
     graph = Graph("maze.txt")
+    print("Reading maze from maze.txt...")
+    time.sleep(2)
+
+    # show read maze
+    print("\nMaze read! Here is the maze: \n----------")
+    graph.draw()
+
+    print(style.WHITE + "----------\nPress any key to find your way out!")
+    input()
+
+
     path = graph.aStarSearch()
     pathDisplay = []
 
+
+    print(style.WHITE + "Press any key to display the optimal path!")
+    input()
     time.sleep(2)
+
     # Display optimal path
     for coord in path:
         pathDisplay.append(coord)
@@ -210,16 +231,22 @@ def main():
 
         for row in range(graph.mazeSize):
             for column in range(graph.mazeSize):
-                if (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.GREEN + "%", end=" ")
+                if (row, column) == graph.start:
+                    print(style.YELLOW + graph.data[row][column], end=" ")
+                elif (row, column) == graph.end:
+                    print(style.YELLOW + graph.data[row][column], end=" ")
+                elif graph.isWallChar(graph.data[row][column]):
+                    print(style.BLUE + graph.data[row][column], end=" ")
+                elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
+                    print(style.GREEN + "█", end=" ")
                 elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.RED + "o", end=" ")
+                    print(style.RED + "█", end=" ")
                 else:
                     print(style.WHITE + graph.data[row][column], end=" ")
             print()
 
     print()
-    print("Length is {}".format(len(path)))
+    print(style.GREEN + "Optimal path found!")
 
 if __name__ == '__main__':
     main()
