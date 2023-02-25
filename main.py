@@ -136,6 +136,7 @@ class Graph:
             if n == self.end:
                 optimalPath = []
                 print("Goal found!")
+                time.sleep(2)
                 node = self.end
 
                 while node != parents[node]:
@@ -184,9 +185,9 @@ class Graph:
         for row in range(self.mazeSize):
             for column in range(self.mazeSize):
                 if (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
-                    print("o", end=" ")
+                    print(style.RED + "o", end=" ")
                 else:
-                    print(self.data[row][column], end=" ")
+                    print(style.WHITE + self.data[row][column], end=" ")
             print()
 
 
@@ -198,19 +199,23 @@ def main():
     path = graph.aStarSearch()
     pathDisplay = []
 
+    time.sleep(2)
     # Display optimal path
     for coord in path:
         pathDisplay.append(coord)
         time.sleep(.5)
+
         os.system('cls' if os.name == 'nt' else 'clear')
+
+
         for row in range(graph.mazeSize):
             for column in range(graph.mazeSize):
                 if (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
-                    print("%", end=" ")
+                    print(style.GREEN + "%", end=" ")
                 elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
-                    print("o", end=" ")
+                    print(style.RED + "o", end=" ")
                 else:
-                    print(graph.data[row][column], end=" ")
+                    print(style.WHITE + graph.data[row][column], end=" ")
             print()
 
     print()
