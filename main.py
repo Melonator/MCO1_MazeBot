@@ -3,15 +3,20 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import mazeGen
+import math
+from timeit import default_timer as timer
+import matplotlib.pyplot as plt
+import csv
 
 class Graph:
     mazeSize = int
     start = (int, int)
     end = (int, int)
     adjacList = {}
+    statesExplored = 0
 
-    def __init__(self, mazeTextFile):
-        self.createAdjList(mazeTextFile)
+    def __init__(self, mazeList):
+        self.createAdjList(mazeList)
 
     # Utility method
     def isWallChar(self, char):
@@ -34,37 +39,28 @@ class Graph:
 
         return False
 
-    # Utility method
-    def fileToStringList(self, mazeTextFile):
-        file = open(mazeTextFile, "r")
-        data = file.read().split("\n")
-        file.close()
-        return data
-
     # Create adjacency list from text file
-    def createAdjList(self, mazeTextFile):
-        data = self.fileToStringList(mazeTextFile)
-        self.mazeSize = int(data[0])
-        data.pop(0)
+    def createAdjList(self, mazeList):
+        self.mazeSize = len(mazeList)
         for x in range(self.mazeSize):
             for y in range(self.mazeSize):
-                char = data[x][y]
+                char = mazeList[x][y]
                 # Get traversible locations if node is not a wall
                 if not self.isWallChar(char):
                     if not self.isOutOfBounds(x-1, y):
-                        up = data[x-1][y]
+                        up = mazeList[x-1][y]
                     else:
                         up = " "
                     if not self.isOutOfBounds(x+1, y):
-                        down = data[x+1][y]
+                        down = mazeList[x+1][y]
                     else:
                         down = " "
                     if not self.isOutOfBounds(x, y-1):
-                        left = data[x][y-1]
+                        left = mazeList[x][y-1]
                     else:
                         left = " "
                     if not self.isOutOfBounds(x, y+1):
-                        right = data[x][y+1]
+                        right = mazeList[x][y+1]
                     else:
                         right = " "
 
@@ -118,6 +114,7 @@ class Graph:
             for node in open:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
+            self.statesExplored += 1
 
             if n is None:
                 print("No path exists!")
@@ -126,7 +123,6 @@ class Graph:
             # Return optimal path via traversing parent map if end is reached
             if n == self.end:
                 optimalPath = []
-                print("Goal found!")
                 node = self.end
                 while node != parents[node]:
                     optimalPath.append(node)
@@ -164,13 +160,63 @@ class Graph:
 # 1. Instantiate graph object
 # 2. Set constructor as the name of the file
 # 3. Call object.aStarSearch() to return the most optimal path
-def main():
-    graph = Graph("maze.txt")
-    path = graph.aStarSearch()
-    print("Path is {}".format(path))
-    print("Length is {}".format(len(path)))
 
-    mazeGen.printMaze(mazeGen.maze)
+def initStartEnd(maze):
+    for column in range(len(maze)):
+        if maze[0][column] == '.':
+            maze[0][column] = 'S'
+        if maze[len(maze) - 1][column] == '.':
+            maze[len(maze) - 1][column] = 'G'
+
+def main():
+    sumTime = 0
+    sumStates = 0
+    averageStates = 0
+    averageTime = 0
+    x = []
+    y = []
+    testCases = [[0 for x in range(60)] for y in range(50)]
+
+    for n in range(5, 65):
+        mg = mazeGen.mazeGenerator()
+        mg.mazeSize = n
+        x.append(n)
+        for i in range(50):
+            maze = mg.generateMaze()
+            initStartEnd(maze)
+            graph = Graph(maze)
+            start = timer()
+            path = graph.aStarSearch()
+            end = timer()
+            total = end - start
+            testCases[i][n-5] = total
+            sumTime += total
+            sumStates += graph.statesExplored
+            print("time is {}".format(total))
+            maze.clear()
+        averageTime = sumTime / 50
+        averageStates = sumStates / 50
+        y.append(averageTime)
+        sumTime = 0
+        sumStates = 0
+        print("Average time for size {} is {}".format(n, averageTime))
+        print("Average states explored for size {} is {}".format(n, math.floor(averageStates)))
+
+    plt.plot(x, y, color='g', label="Runtime")
+
+    plt.xticks(rotation=25)
+    plt.xlabel('Maze size')
+    plt.ylabel('Time')
+    plt.title('Average Runtime of A*', fontsize=20)
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+    with open('runtimes.csv', 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(testCases)
+
+
 
 if __name__ == '__main__':
     main()
