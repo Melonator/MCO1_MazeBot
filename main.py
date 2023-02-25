@@ -118,6 +118,9 @@ class Graph:
             for node in open:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
+                elif fCosts[node] == fCosts[n]:
+                    if self.heuristic(node) < self.heuristic(n):
+                        n = node
 
             # Explored
             self.explored[(n[0], n[1])] = (n[0], n[1])
@@ -173,7 +176,7 @@ class Graph:
 
     def draw(self):
 
-        time.sleep(.5)
+        time.sleep(.2)
         if os.name == 'nt':
             os.system('cls')
         else:
