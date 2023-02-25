@@ -201,28 +201,38 @@ class Graph:
 # 2. Set constructor as the name of the file
 # 3. Call object.aStarSearch() to return the most optimal path
 def main():
+    print(style.WHITE + "Welcome to the MazeBot!\n")
+    print(style.WHITE + "---------------------")
+    print(style.WHITE + "LEGENDS:")
+    print(style.YELLOW + "   ⚑ - Start")
+    print(style.GREEN + "   ⚑ - Goal")
+    print(style.WHITE + "   ⏹ - Unexplored Path")
+    print(style.RED + "   ⏹ - Explored Path")
+    print(style.GREEN + "   ⏹ - Optimal Path")
+    print(style.BLUE + "   ⊡ - Wall",)
+    print(style.WHITE + "---------------------")
+    print(style.WHITE + "Press any key to continue!")
+    input()
+
     graph = Graph("maze.txt")
     print("Reading maze from maze.txt...")
     time.sleep(2)
 
     # show read maze
-    print("\nMaze read! Here is the maze: \n----------")
+    print("\nMaze read! Here is the maze:")
+    time.sleep(2)
     graph.draw()
 
-    print(style.WHITE + "----------\nPress any key to find your way out!")
+    print(style.WHITE + "Press any key to find your way out!")
     input()
 
     path = graph.aStarSearch()
     pathDisplay = []
 
-    print(style.WHITE + "Press any key to display the optimal path!")
-    input()
-    time.sleep(2)
-
     # Display optimal path
     for coord in path:
         pathDisplay.append(coord)
-        time.sleep(.5)
+        time.sleep(.3)
 
         if os.name == 'nt':
             os.system('cls')
@@ -245,7 +255,6 @@ def main():
                     print(style.WHITE + "⏹", end=" ")
             print()
 
-    print()
     print(style.GREEN + "Optimal path found!")
 
 
