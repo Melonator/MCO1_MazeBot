@@ -185,15 +185,15 @@ class Graph:
         for row in range(self.mazeSize):
             for column in range(self.mazeSize):
                 if (row, column) == self.start:
-                    print(style.YELLOW + self.data[row][column], end=" ")
+                    print(style.YELLOW + "⚑", end=" ")
                 elif (row, column) == self.end:
-                    print(style.YELLOW + self.data[row][column], end=" ")
+                    print(style.GREEN + "⚑", end=" ")
                 elif self.isWallChar(self.data[row][column]):
-                    print(style.BLUE + self.data[row][column], end=" ")
+                    print(style.BLUE + "⊡", end=" ")
                 elif (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
-                    print(style.RED + "█", end=" ")
+                    print(style.RED + "⏹", end=" ")
                 else:
-                    print(style.WHITE + self.data[row][column], end=" ")
+                    print(style.WHITE + "⏹", end=" ")
             print()
 
 
@@ -232,17 +232,17 @@ def main():
         for row in range(graph.mazeSize):
             for column in range(graph.mazeSize):
                 if (row, column) == graph.start:
-                    print(style.YELLOW + graph.data[row][column], end=" ")
+                    print(style.YELLOW + "⚑", end=" ")
                 elif (row, column) == graph.end:
-                    print(style.YELLOW + graph.data[row][column], end=" ")
+                    print(style.GREEN + "⚑", end=" ")
                 elif graph.isWallChar(graph.data[row][column]):
-                    print(style.BLUE + graph.data[row][column], end=" ")
+                    print(style.BLUE + "⊡", end=" ")
                 elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.GREEN + "█", end=" ")
+                    print(style.GREEN + "⏹", end=" ")
                 elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.RED + "█", end=" ")
+                    print(style.RED + "⏹", end=" ")
                 else:
-                    print(style.WHITE + graph.data[row][column], end=" ")
+                    print(style.WHITE + "⏹", end=" ")
             print()
 
     print()
