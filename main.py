@@ -189,11 +189,11 @@ class Graph:
                 elif (row, column) == self.end:
                     print(style.GREEN + "⚑", end=" ")
                 elif self.isWallChar(self.data[row][column]):
-                    print(style.BLUE + "⊡", end=" ")
+                    print(style.BLUE + "⏹", end=" ")
                 elif (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
-                    print(style.RED + "⏹", end=" ")
+                    print(style.RED + "□", end=" ")
                 else:
-                    print(style.WHITE + "⏹", end=" ")
+                    print(style.WHITE + "□", end=" ")
             print()
 
 
@@ -206,10 +206,10 @@ def main():
     print(style.WHITE + "LEGENDS:")
     print(style.YELLOW + "   ⚑ - Start")
     print(style.GREEN + "   ⚑ - Goal")
-    print(style.WHITE + "   ⏹ - Unexplored Path")
-    print(style.RED + "   ⏹ - Explored Path")
-    print(style.GREEN + "   ⏹ - Optimal Path")
-    print(style.BLUE + "   ⊡ - Wall",)
+    print(style.WHITE + "   □ - Unexplored Path")
+    print(style.RED + "   □ - Explored Path")
+    print(style.GREEN + "   □ - Optimal Path")
+    print(style.BLUE + "   ⏹ - Wall",)
     print(style.WHITE + "---------------------")
     print(style.WHITE + "Press any key to continue!")
     input()
@@ -246,13 +246,13 @@ def main():
                 elif (row, column) == graph.end:
                     print(style.GREEN + "⚑", end=" ")
                 elif graph.isWallChar(graph.data[row][column]):
-                    print(style.BLUE + "⊡", end=" ")
+                    print(style.BLUE + "⏹", end=" ")
                 elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.GREEN + "⏹", end=" ")
+                    print(style.GREEN + "□", end=" ")
                 elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.RED + "⏹", end=" ")
+                    print(style.RED + "□", end=" ")
                 else:
-                    print(style.WHITE + "⏹", end=" ")
+                    print(style.WHITE + "□", end=" ")
             print()
 
     print(style.GREEN + "Optimal path found!")
