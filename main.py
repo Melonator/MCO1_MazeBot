@@ -4,6 +4,7 @@ import style
 
 
 class Graph:
+    statesExplored = 0
     mazeSize = int
     start = (int, int)
     end = (int, int)
@@ -121,6 +122,7 @@ class Graph:
                 elif fCosts[node] == fCosts[n]:
                     if self.heuristic(node) < self.heuristic(n):
                         n = node
+            self.statesExplored += 1
 
             # Explored
             self.explored[(n[0], n[1])] = (n[0], n[1])
@@ -175,8 +177,7 @@ class Graph:
         return None
 
     def draw(self):
-
-        time.sleep(.2)
+        time.sleep(.1)
         if os.name == 'nt':
             os.system('cls')
         else:
@@ -232,7 +233,7 @@ def main():
     # Display optimal path
     for coord in path:
         pathDisplay.append(coord)
-        time.sleep(.3)
+        time.sleep(.1)
 
         if os.name == 'nt':
             os.system('cls')
@@ -256,6 +257,7 @@ def main():
             print()
 
     print(style.GREEN + "Optimal path found!")
+    print("Total number of states explored: ", graph.statesExplored)
 
 
 if __name__ == '__main__':
