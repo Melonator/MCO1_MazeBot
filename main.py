@@ -1,13 +1,14 @@
-# This is a sample Python script.
+import os
+import time
+import style
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 class Graph:
     mazeSize = int
     start = (int, int)
     end = (int, int)
     adjacList = {}
+    explored = {}
 
     def __init__(self, mazeTextFile):
         self.createAdjList(mazeTextFile)
@@ -42,46 +43,46 @@ class Graph:
 
     # Create adjacency list from text file
     def createAdjList(self, mazeTextFile):
-        data = self.fileToStringList(mazeTextFile)
-        self.mazeSize = int(data[0])
-        data.pop(0)
+        self.data = self.fileToStringList(mazeTextFile)
+        self.mazeSize = int(self.data[0])
+        self.data.pop(0)
         for x in range(self.mazeSize):
             for y in range(self.mazeSize):
-                char = data[x][y]
+                char = self.data[x][y]
                 # Get traversible locations if node is not a wall
                 if not self.isWallChar(char):
-                    if not self.isOutOfBounds(x-1, y):
-                        up = data[x-1][y]
+                    if not self.isOutOfBounds(x - 1, y):
+                        up = self.data[x - 1][y]
                     else:
                         up = " "
-                    if not self.isOutOfBounds(x+1, y):
-                        down = data[x+1][y]
+                    if not self.isOutOfBounds(x + 1, y):
+                        down = self.data[x + 1][y]
                     else:
                         down = " "
-                    if not self.isOutOfBounds(x, y-1):
-                        left = data[x][y-1]
+                    if not self.isOutOfBounds(x, y - 1):
+                        left = self.data[x][y - 1]
                     else:
                         left = " "
-                    if not self.isOutOfBounds(x, y+1):
-                        right = data[x][y+1]
+                    if not self.isOutOfBounds(x, y + 1):
+                        right = self.data[x][y + 1]
                     else:
                         right = " "
 
                     nodes = [up, down, left, right]
-                    nodesCoords = [(x-1,y), (x+1, y),
-                                   (x, y-1), (x, y+1)]
+                    nodesCoords = [(x - 1, y), (x + 1, y),
+                                   (x, y - 1), (x, y + 1)]
                     adjacNodesCoords = []
 
                     for i in range(len(nodes)):
                         if nodes[i] != " " and self.isWallChar(nodes[i]) is False:
                             adjacNodesCoords.append(nodesCoords[i])
-                    self.adjacList[x,y] = adjacNodesCoords
+                    self.adjacList[x, y] = adjacNodesCoords
 
                 # Set start if node encountered is start
-                if(self.isStartChar(char)):
+                if (self.isStartChar(char)):
                     self.start = (x, y)
                 # Set end if node encountered is end
-                elif(self.isGoalChar(char)):
+                elif (self.isGoalChar(char)):
                     self.end = (x, y)
 
     # Utility method
@@ -103,7 +104,7 @@ class Graph:
         gCosts = {}
         gCosts[self.start] = 0
 
-        #set initial costs
+        # set initial costs
         for neighbor in self.getNeighbors(self.start):
             gCosts[neighbor] = 1
 
@@ -117,6 +118,15 @@ class Graph:
             for node in open:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
+                elif fCosts[node] == fCosts[n]:
+                    if self.heuristic(node) < self.heuristic(n):
+                        n = node
+
+            # Explored
+            self.explored[(n[0], n[1])] = (n[0], n[1])
+
+            # Call draw path function
+            self.draw()
 
             if n is None:
                 print("No path exists!")
@@ -125,13 +135,16 @@ class Graph:
             # Return optimal path via traversing parent map if end is reached
             if n == self.end:
                 optimalPath = []
-                print("Goal found!")
+                print(style.GREEN + "Goal found!")
+                time.sleep(2)
                 node = self.end
+
                 while node != parents[node]:
                     optimalPath.append(node)
                     node = parents[node]
                 optimalPath.append(self.start)
                 optimalPath.reverse()
+
                 return optimalPath
 
             # Get all neighbors of chosen node
@@ -160,14 +173,90 @@ class Graph:
 
         print('Path does not exist!')
         return None
+
+    def draw(self):
+
+        time.sleep(.2)
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+
+        for row in range(self.mazeSize):
+            for column in range(self.mazeSize):
+                if (row, column) == self.start:
+                    print(style.YELLOW + "⚑", end=" ")
+                elif (row, column) == self.end:
+                    print(style.GREEN + "⚑", end=" ")
+                elif self.isWallChar(self.data[row][column]):
+                    print(style.BLUE + "⊡", end=" ")
+                elif (row, column) in self.explored and (row, column) != self.start and (row, column) != self.end:
+                    print(style.RED + "⏹", end=" ")
+                else:
+                    print(style.WHITE + "⏹", end=" ")
+            print()
+
+
 # 1. Instantiate graph object
 # 2. Set constructor as the name of the file
 # 3. Call object.aStarSearch() to return the most optimal path
 def main():
+    print(style.WHITE + "Welcome to the MazeBot!\n")
+    print(style.WHITE + "---------------------")
+    print(style.WHITE + "LEGENDS:")
+    print(style.YELLOW + "   ⚑ - Start")
+    print(style.GREEN + "   ⚑ - Goal")
+    print(style.WHITE + "   ⏹ - Unexplored Path")
+    print(style.RED + "   ⏹ - Explored Path")
+    print(style.GREEN + "   ⏹ - Optimal Path")
+    print(style.BLUE + "   ⊡ - Wall",)
+    print(style.WHITE + "---------------------")
+    print(style.WHITE + "Press any key to continue!")
+    input()
+
     graph = Graph("maze.txt")
+    print("Reading maze from maze.txt...")
+    time.sleep(2)
+
+    # show read maze
+    print("\nMaze read! Here is the maze:")
+    time.sleep(2)
+    graph.draw()
+
+    print(style.WHITE + "Press any key to find your way out!")
+    input()
+
     path = graph.aStarSearch()
-    print("Path is {}".format(path))
-    print("Length is {}".format(len(path)))
+    pathDisplay = []
+
+    # Display optimal path
+    for coord in path:
+        pathDisplay.append(coord)
+        time.sleep(.3)
+
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+
+        for row in range(graph.mazeSize):
+            for column in range(graph.mazeSize):
+                if (row, column) == graph.start:
+                    print(style.YELLOW + "⚑", end=" ")
+                elif (row, column) == graph.end:
+                    print(style.GREEN + "⚑", end=" ")
+                elif graph.isWallChar(graph.data[row][column]):
+                    print(style.BLUE + "⊡", end=" ")
+                elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
+                    print(style.GREEN + "⏹", end=" ")
+                elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
+                    print(style.RED + "⏹", end=" ")
+                else:
+                    print(style.WHITE + "⏹", end=" ")
+            print()
+
+    print(style.GREEN + "Optimal path found!")
+
 
 if __name__ == '__main__':
     main()
