@@ -131,7 +131,6 @@ class Graph:
             self.draw()
 
             if n is None:
-                print("No path exists!")
                 return None
 
             # Return optimal path via traversing parent map if end is reached
@@ -173,7 +172,6 @@ class Graph:
             open.remove(n)
             closed.add(n)
 
-        print('Path does not exist!')
         return None
 
     def draw(self):
@@ -231,33 +229,37 @@ def main():
     pathDisplay = []
 
     # Display optimal path
-    for coord in path:
-        pathDisplay.append(coord)
-        time.sleep(.1)
+    if(path is not None):
+        for coord in path:
+            pathDisplay.append(coord)
+            time.sleep(.1)
 
-        if os.name == 'nt':
-            os.system('cls')
-        else:
-            os.system('clear')
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
 
-        for row in range(graph.mazeSize):
-            for column in range(graph.mazeSize):
-                if (row, column) == graph.start:
-                    print(style.YELLOW + "⚑", end=" ")
-                elif (row, column) == graph.end:
-                    print(style.GREEN + "⚑", end=" ")
-                elif graph.isWallChar(graph.data[row][column]):
-                    print(style.BLUE + "□", end=" ")
-                elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.GREEN + "□", end=" ")
-                elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
-                    print(style.RED + "□", end=" ")
-                else:
-                    print(style.WHITE + "□", end=" ")
-            print()
+            for row in range(graph.mazeSize):
+                for column in range(graph.mazeSize):
+                    if (row, column) == graph.start:
+                        print(style.YELLOW + "⚑", end=" ")
+                    elif (row, column) == graph.end:
+                        print(style.GREEN + "⚑", end=" ")
+                    elif graph.isWallChar(graph.data[row][column]):
+                        print(style.BLUE + "□", end=" ")
+                    elif (row, column) in pathDisplay and (row, column) != graph.start and (row, column) != graph.end:
+                        print(style.GREEN + "□", end=" ")
+                    elif (row, column) in graph.explored and (row, column) != graph.start and (row, column) != graph.end:
+                        print(style.RED + "□", end=" ")
+                    else:
+                        print(style.WHITE + "□", end=" ")
+                print()
 
-    print(style.GREEN + "Optimal path found!")
-    print("Total number of states explored: ", graph.statesExplored)
+        print(style.GREEN + "Optimal path found!")
+        print("Total number of states explored: ", graph.statesExplored)
+    else:
+        print(style.RED + "No path found...")
+        print("Total number of states explored: ", graph.statesExplored)
 
 
 if __name__ == '__main__':
