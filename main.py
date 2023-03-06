@@ -165,10 +165,6 @@ class Graph:
                         fCosts[neighbor] = gCosts[n] + self.heuristic(neighbor)
                         parents[neighbor] = n
 
-                        if neighbor in closed:
-                            closed.remove(neighbor)
-                            open.add(neighbor)
-
             open.remove(n)
             closed.add(n)
 
