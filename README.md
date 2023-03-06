@@ -1,6 +1,6 @@
 # MazeBot
 
-This project is for a machine course output for the course CSINTSY at De La Salle University.
+This project is a machine course output for the course CSINTSY at De La Salle University.
 
 The MazeBot is a robot equipped with an algorithm that enables it to navigate through a given maze configuration, and reach the end goal. Its movements are limited to a single step at a time in four directions—up, down, left, or right—and only on open spaces.
 
