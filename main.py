@@ -215,7 +215,7 @@ def main():
 
     print("Reading maze from maze.txt...")
     try:
-        graph = Graph("maze.txt")
+        graph = Graph("dist/maze.txt")
     except FileNotFoundError:
         print("File not found! Please make sure \"maze.txt\" is in the same directory as this script.")
         print(style.WHITE + "Press any key to exit the program.")
