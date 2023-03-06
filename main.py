@@ -136,7 +136,7 @@ class Graph:
             # Return optimal path via traversing parent map if end is reached
             if n == self.end:
                 optimalPath = []
-                print(style.GREEN + "Goal found!")
+                print(style.GREEN + "\nGoal found!")
                 time.sleep(2)
                 node = self.end
 
@@ -164,10 +164,6 @@ class Graph:
                     if gCosts[n] < gCosts[neighbor]:
                         fCosts[neighbor] = gCosts[n] + self.heuristic(neighbor)
                         parents[neighbor] = n
-
-                        if neighbor in closed:
-                            closed.remove(neighbor)
-                            open.add(neighbor)
 
             open.remove(n)
             closed.add(n)
@@ -213,8 +209,14 @@ def main():
     print(style.WHITE + "Press any key to continue!")
     input()
 
-    graph = Graph("maze.txt")
     print("Reading maze from maze.txt...")
+    try:
+        graph = Graph("dist/maze.txt")
+    except FileNotFoundError:
+        print("File not found! Please make sure \"maze.txt\" is in the same directory as this script.")
+        print(style.WHITE + "Press any key to exit the program.")
+        input()
+        exit()
     time.sleep(2)
 
     # show read maze
@@ -255,11 +257,14 @@ def main():
                         print(style.WHITE + "□", end=" ")
                 print()
 
-        print(style.GREEN + "Optimal path found!")
-        print("Total number of states explored: ", graph.statesExplored)
+        print(style.GREEN + "\nOptimal path found!")
+        print(style.WHITE + "Total number of states explored: ", graph.statesExplored)
     else:
-        print(style.RED + "No path found...")
-        print("Total number of states explored: ", graph.statesExplored)
+        print(style.RED + "\nNo path found...")
+        print(style.WHITE + "Total number of states explored: ", graph.statesExplored)
+
+    print(style.WHITE + "\nPress any key to exit the program.")
+    input()
 
 
 if __name__ == '__main__':
