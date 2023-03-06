@@ -119,6 +119,9 @@ class Graph:
             for node in open:
                 if n == None or (fCosts[node] < fCosts[n]):
                     n = node
+                elif fCosts[node] == fCosts[n]:
+                    if self.heuristic(node) < self.heuristic(n):
+                        n = node
             self.statesExplored += 1
 
             # Explored
