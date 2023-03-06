@@ -18,4 +18,6 @@ The MazeBot is a robot equipped with an algorithm that enables it to navigate th
 1. Download the repository.
 2. Open the folder in your terminal.
 3. Run the command `python3 main.py` or `python main.py` depending on your python version.
-4. To change the maze, edit the `maze.txt` file in the `dist` folder.
+
+### Note
+To change the maze, edit the `maze.txt` file in the `dist` folder.
