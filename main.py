@@ -136,7 +136,7 @@ class Graph:
             # Return optimal path via traversing parent map if end is reached
             if n == self.end:
                 optimalPath = []
-                print(style.GREEN + "Goal found!")
+                print(style.GREEN + "\nGoal found!")
                 time.sleep(2)
                 node = self.end
 
@@ -261,11 +261,14 @@ def main():
                         print(style.WHITE + "□", end=" ")
                 print()
 
-        print(style.GREEN + "Optimal path found!")
-        print("Total number of states explored: ", graph.statesExplored)
+        print(style.GREEN + "\nOptimal path found!")
+        print(style.WHITE + "Total number of states explored: ", graph.statesExplored)
     else:
-        print(style.RED + "No path found...")
-        print("Total number of states explored: ", graph.statesExplored)
+        print(style.RED + "\nNo path found...")
+        print(style.WHITE + "Total number of states explored: ", graph.statesExplored)
+
+    print(style.WHITE + "\nPress any key to exit the program.")
+    input()
 
 
 if __name__ == '__main__':
