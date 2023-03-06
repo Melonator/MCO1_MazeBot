@@ -213,8 +213,14 @@ def main():
     print(style.WHITE + "Press any key to continue!")
     input()
 
-    graph = Graph("maze.txt")
     print("Reading maze from maze.txt...")
+    try:
+        graph = Graph("maze.txt")
+    except FileNotFoundError:
+        print("File not found! Please make sure \"maze.txt\" is in the same directory as this script.")
+        print(style.WHITE + "Press any key to exit the program.")
+        input()
+        exit()
     time.sleep(2)
 
     # show read maze
